@@ -181,17 +181,19 @@ def collect(arguments):
 
                 with open(parameter_file, 'r') as f:
                     parameter_values = json.load(f)
-                    pyjq_parse_string = '|'.join(parameters[dynamic_parameter].split('|')[1:])
-                    for parameter in pyjq.all(pyjq_parse_string, parameter_values):
-                        filename = get_filename_from_parameter(parameter)
-                        identifier = get_identifier_from_parameter(parameter)
-                        parameters[dynamic_parameter] = identifier
+                    if parameter_values is not None and len(parameter_values) != 0:
+                        print(parameter_values)
+                        pyjq_parse_string = '|'.join(parameters[dynamic_parameter].split('|')[1:])
+                        for parameter in pyjq.all(pyjq_parse_string, parameter_values):
+                            filename = get_filename_from_parameter(parameter)
+                            identifier = get_identifier_from_parameter(parameter)
+                            parameters[dynamic_parameter] = identifier
 
-                        outputfile = "{}/{}".format(
-                            filepath,
-                            filename)
+                            outputfile = "{}/{}".format(
+                                filepath,
+                                filename)
 
-                        call_function(outputfile, handler, method_to_call, parameters)
+                            call_function(outputfile, handler, method_to_call, parameters)
             else:
                 filepath = filepath+".json"
                 call_function(filepath, handler, method_to_call, parameters)
